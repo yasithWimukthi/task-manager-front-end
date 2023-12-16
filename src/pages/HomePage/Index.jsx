@@ -42,6 +42,38 @@ const HomePage = () => {
             });
     }
 
+    const handleTaskDelete = (id) => {
+        Swal.fire({
+            title: "Do you want to remove this task?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Remove",
+            denyButtonText: `Don't remove`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`/tasks/${id}`)
+                    .then(response => {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Task deleted successfully",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Something went wrong!",
+                        });
+                    });
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+        });
+
+    }
+
     useEffect(() => {
         axios.get('/tasks')
             .then(response => {
@@ -76,6 +108,7 @@ const HomePage = () => {
                                         name={task.name}
                                         description={task.description}
                                         priority={task.priority}
+                                        onDelete={()=>handleTaskDelete(task.id)}
                                     />
                                 )
                             })
@@ -91,6 +124,7 @@ const HomePage = () => {
                                         name={task.name}
                                         description={task.description}
                                         priority={task.priority}
+                                        onDelete={()=>handleTaskDelete(task.id)}
                                     />
                                 )
                             })
@@ -106,6 +140,7 @@ const HomePage = () => {
                                         name={task.name}
                                         description={task.description}
                                         priority={task.priority}
+                                        onDelete={()=>handleTaskDelete(task.id)}
                                     />
                                 )
                             })
