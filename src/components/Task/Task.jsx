@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Chip, Stack} from "@mui/material";
+import {Button, Stack} from "@mui/material";
 import './Task.css';
 import {ChipGenerator} from "../../helper/HelperMethods";
 

@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Button, Container, Grid} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import TaskForm from "../../components/TaskForm/TaskForm";
 import axios from "../../config/axiosConfig";
+import Swal from 'sweetalert2';
+import TaskForm from "../../components/TaskForm/TaskForm";
 import Task from "../../components/Task/Task";
 import './HomePage.css';
 
@@ -24,21 +25,20 @@ const HomePage = () => {
         console.log(values);
         axios.post('/tasks', values)
             .then(response => {
-                // setLocations(response.data.data);
-                // Swal.fire({
-                //     icon: "success",
-                //     title: "Location added successfully",
-                //     showConfirmButton: false,
-                //     timer: 1500
-                // });
-                // formik.resetForm();
+                Swal.fire({
+                    icon: "success",
+                    title: "Task added successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                formik.resetForm();
             })
             .catch(error => {
-                // Swal.fire({
-                //     icon: "error",
-                //     title: "Oops...",
-                //     text: error.response.data.message,
-                // });
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: error.response.data.message,
+                });
             });
     }
 
