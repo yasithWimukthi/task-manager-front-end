@@ -1,3 +1,7 @@
+.home-container {
+    height: 100vh;
+    overflow: hidden;
+}
 h1 {
     font-family: "Dancing Script", cursive;
     text-align: center;
@@ -5,4 +9,19 @@ h1 {
     font-size: 45px;
     color: #335c62;
     font-weight: 700;
+}
+.task-container {
+    height: 80vh;
+    position: relative;
+}
+.add-btn {
+    position: absolute !important;
+    bottom: 10px;
+    right: 20px;
+    margin: 20px;
+    padding: 10px 20px;
+    border: none;
+}
+.MuiButton-endIcon {
+    margin-left: 0 !important;
 }
