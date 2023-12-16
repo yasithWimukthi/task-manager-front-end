@@ -8,7 +8,6 @@ import './HomePage.css';
 
 const HomePage = () => {
     const [isAddTaskFormOpen, setIsAddTaskFormOpen] = useState(false);
-    const [tasks, setTasks] = useState([]);
     const [todoTasks, setTodoTasks] = useState([]);
     const [inProgressTasks, setInProgressTasks] = useState([]);
     const [completedTasks, setCompletedTasks] = useState([]);
@@ -46,7 +45,6 @@ const HomePage = () => {
     useEffect(() => {
         axios.get('/tasks')
             .then(response => {
-                setTasks(response.data);
                 setTodoTasks(()=>response.data.filter(task => task.status === 'TODO'));
                 setInProgressTasks(()=>response.data.filter(task => task.status === 'IN_PROGRESS'));
                 setCompletedTasks(()=>response.data.filter(task => task.status === 'COMPLETED'));

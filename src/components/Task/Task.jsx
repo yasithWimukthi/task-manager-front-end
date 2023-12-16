@@ -1,12 +1,13 @@
 import React from 'react';
 import {Button, Chip, Stack} from "@mui/material";
 import './Task.css';
+import {ChipGenerator} from "../../helper/HelperMethods";
 
 const Task = ({name, description, priority}) => {
     return (
         <div className="card">
             <div className="card-body">
-                <Chip label="primary" color="primary"/>
+                {ChipGenerator(priority)}
                 <h4>
                     {name}
                 </h4>
