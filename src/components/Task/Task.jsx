@@ -3,7 +3,7 @@ import {Button, Stack} from "@mui/material";
 import './Task.css';
 import {ChipGenerator} from "../../helper/HelperMethods";
 
-const Task = ({name, description, priority, onDelete}) => {
+const Task = ({name, description, priority, onDelete, onEdit}) => {
     return (
         <div className="card">
             <div className="card-body">
@@ -16,7 +16,7 @@ const Task = ({name, description, priority, onDelete}) => {
                 </p>
                 <div className="button-container ">
                     <Stack direction="row" spacing={2}>
-                        <Button variant="contained" color="success">
+                        <Button variant="contained" color="success" onClick={onEdit}>
                             Update
                         </Button>
                         <Button variant="contained" color="error" onClick={onDelete}>
