@@ -14,7 +14,12 @@ const validationSchema = Yup.object({
 
 const TaskForm = ({task = {
                           description: '', name: '', priority: '', status: '',
-                      }, title, open, onClose, onSubmit
+                      },
+                      title,
+                      buttonText = "Create",
+                      open,
+                      onClose,
+                      onSubmit
                   }) => {
 
     const formik = useFormik({
@@ -96,7 +101,7 @@ const TaskForm = ({task = {
 
                     <Box mt={2}>
                         <Button variant="contained" color="primary" type="submit">
-                            Create
+                            {buttonText}
                         </Button>
                     </Box>
                 </form>

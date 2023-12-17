@@ -14,6 +14,8 @@ const HomePage = () => {
     const [todoTasks, setTodoTasks] = useState([]);
     const [inProgressTasks, setInProgressTasks] = useState([]);
     const [completedTasks, setCompletedTasks] = useState([]);
+    const [task,setTask] = useState({});
+    const [taskToDelete,setTaskToDelete] = useState(null);
 
     const handleAddTaskFormOpen = () => {
         setIsAddTaskFormOpen(true);
@@ -26,7 +28,6 @@ const HomePage = () => {
     const handleEditTaskFormOpen = (task) => {
         setTaskToEdit(task);
         setIsEditTaskFormOpen(true);
-        console.log(task)
     }
 
     const handleEditTaskFormClose = () => {
@@ -34,7 +35,7 @@ const HomePage = () => {
     }
 
     const handleTaskFormSubmit = (values,formik) => {
-        console.log(values);
+        setTask(values)
         axios.post('/tasks', values)
             .then(response => {
                 Swal.fire({
@@ -49,13 +50,14 @@ const HomePage = () => {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: error.response.data.message,
+                    text: error.response.data.Errors[0],
                 });
+                console.log(error)
             });
     }
 
     const handleTaskEdit = (values,formik) => {
-        console.log(values);
+        setTask(values)
         axios.put(`/tasks/${taskToEdit.id}`, values)
             .then(response => {
                 Swal.fire({
@@ -70,7 +72,7 @@ const HomePage = () => {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: error.response.data.message,
+                    text: error.response.data.Errors[0],
                 });
             });
     }
@@ -84,6 +86,7 @@ const HomePage = () => {
             denyButtonText: `Don't remove`
         }).then((result) => {
             if (result.isConfirmed) {
+                setTaskToDelete(id);
                 axios.delete(`/tasks/${id}`)
                     .then(response => {
                         Swal.fire({
@@ -116,7 +119,7 @@ const HomePage = () => {
             .catch(error => {
                 console.log(error);
             });
-    },[]);
+    },[task,taskToDelete]);
 
 
     return (
@@ -133,7 +136,8 @@ const HomePage = () => {
                 open={isEditTaskFormOpen}
                 onClose={handleEditTaskFormClose}
                 onSubmit={handleTaskEdit}
-                task={{...taskToEdit}}
+                task={taskToEdit}
+                buttonText="Update"
             />}
             <Container maxWidth="xl" className="task-container">
                 <Grid container spacing={2}>
