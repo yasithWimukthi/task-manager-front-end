@@ -49,8 +49,9 @@ const HomePage = () => {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: error.response.data.message,
+                    text: error.response.data.Errors[0],
                 });
+                console.log(error)
             });
     }
 
@@ -70,7 +71,7 @@ const HomePage = () => {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: error.response.data.message,
+                    text: error.response.data.Errors[0],
                 });
             });
     }
@@ -133,7 +134,8 @@ const HomePage = () => {
                 open={isEditTaskFormOpen}
                 onClose={handleEditTaskFormClose}
                 onSubmit={handleTaskEdit}
-                task={{...taskToEdit}}
+                task={taskToEdit}
+                buttonText="Update"
             />}
             <Container maxWidth="xl" className="task-container">
                 <Grid container spacing={2}>
