@@ -9,6 +9,8 @@ import './HomePage.css';
 
 const HomePage = () => {
     const [isAddTaskFormOpen, setIsAddTaskFormOpen] = useState(false);
+    const [isEditTaskFormOpen, setIsEditTaskFormOpen] = useState(false);
+    const [taskToEdit, setTaskToEdit] = useState(null);
     const [todoTasks, setTodoTasks] = useState([]);
     const [inProgressTasks, setInProgressTasks] = useState([]);
     const [completedTasks, setCompletedTasks] = useState([]);
@@ -21,6 +23,16 @@ const HomePage = () => {
         setIsAddTaskFormOpen(false);
     };
 
+    const handleEditTaskFormOpen = (task) => {
+        setTaskToEdit(task);
+        setIsEditTaskFormOpen(true);
+        console.log(task)
+    }
+
+    const handleEditTaskFormClose = () => {
+        setIsEditTaskFormOpen(false);
+    }
+
     const handleTaskFormSubmit = (values,formik) => {
         console.log(values);
         axios.post('/tasks', values)
@@ -28,6 +40,27 @@ const HomePage = () => {
                 Swal.fire({
                     icon: "success",
                     title: "Task added successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                formik.resetForm();
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: error.response.data.message,
+                });
+            });
+    }
+
+    const handleTaskEdit = (values,formik) => {
+        console.log(values);
+        axios.put(`/tasks/${taskToEdit.id}`, values)
+            .then(response => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Task edited successfully",
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -71,7 +104,6 @@ const HomePage = () => {
                 Swal.fire("Changes are not saved", "", "info");
             }
         });
-
     }
 
     useEffect(() => {
@@ -84,7 +116,7 @@ const HomePage = () => {
             .catch(error => {
                 console.log(error);
             });
-    },[handleTaskFormSubmit]);
+    },[]);
 
 
     return (
@@ -96,6 +128,13 @@ const HomePage = () => {
                 onClose={handleAddTaskFormClose}
                 onSubmit={handleTaskFormSubmit}
             />
+            {taskToEdit && <TaskForm
+                title="Edit Task"
+                open={isEditTaskFormOpen}
+                onClose={handleEditTaskFormClose}
+                onSubmit={handleTaskEdit}
+                task={{...taskToEdit}}
+            />}
             <Container maxWidth="xl" className="task-container">
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
@@ -109,6 +148,7 @@ const HomePage = () => {
                                         description={task.description}
                                         priority={task.priority}
                                         onDelete={()=>handleTaskDelete(task.id)}
+                                        onEdit={()=>handleEditTaskFormOpen(task)}
                                     />
                                 )
                             })
@@ -125,6 +165,7 @@ const HomePage = () => {
                                         description={task.description}
                                         priority={task.priority}
                                         onDelete={()=>handleTaskDelete(task.id)}
+                                        onEdit={()=>handleEditTaskFormOpen(task)}
                                     />
                                 )
                             })
@@ -141,6 +182,7 @@ const HomePage = () => {
                                         description={task.description}
                                         priority={task.priority}
                                         onDelete={()=>handleTaskDelete(task.id)}
+                                        onEdit={()=>handleEditTaskFormOpen(task)}
                                     />
                                 )
                             })

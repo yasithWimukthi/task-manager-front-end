@@ -1,16 +1,8 @@
 import React from 'react';
-import { useFormik } from 'formik';
+import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    TextField,
-    Button,
-    Box,
-    MenuItem,
-    FormControl,
-    InputLabel, Select
+    Box, Button, Dialog, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField
 } from '@mui/material';
 
 const validationSchema = Yup.object({
@@ -20,23 +12,27 @@ const validationSchema = Yup.object({
     status: Yup.string().required('Status is required.'),
 });
 
-const TaskForm = ({ title, open, onClose, onSubmit }) => {
+const TaskForm = ({task = {
+                          description: '', name: '', priority: '', status: '',
+                      }, title, open, onClose, onSubmit
+                  }) => {
+
     const formik = useFormik({
         initialValues: {
-            description: '',
-            name: '',
-            priority: '',
-            status: '',
+            description: task.description,
+            name: task.name,
+            priority: task.priority,
+            status: task.status,
         },
+        enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            onSubmit(values,formik);
+            onSubmit(values, formik);
             onClose();
         },
     });
 
-    return (
-        <Dialog open={open} onClose={onClose}>
+    return (<Dialog open={open} onClose={onClose}>
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
                 <form onSubmit={formik.handleSubmit}>
@@ -105,8 +101,7 @@ const TaskForm = ({ title, open, onClose, onSubmit }) => {
                     </Box>
                 </form>
             </DialogContent>
-        </Dialog>
-    );
+        </Dialog>);
 };
 
 export default TaskForm;
